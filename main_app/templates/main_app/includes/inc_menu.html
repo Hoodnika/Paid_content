@@ -1,0 +1,39 @@
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" >
+        <div class="container-fluid">
+            <a class="navbar-brand"   href="#">Paid_content</a>
+            <div class="collapse navbar-collapse" id="navbarCollapse" >
+                <ul class="navbar-nav me-auto mb-2 mb-md-0" style="height:4vh;">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'main_app:main' %}">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main_app:publication_create' %}">Опубликовать</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user_app:profile' pk=user.pk %}" tabindex="-1" aria-disabled="true">Профиль</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">{{ user.phone_number }}</a>
+                    </li>
+
+                        <form method="post" action="{% url 'user_app:logout' %}">
+                            <li class="nav-item">
+                            {% csrf_token %}
+                            <button type="submit" style="padding: 0.5rem 1rem; border-radius: 0.25rem; background-color: rgba(0,0,0,.03); color: #ff0000; border: none; cursor: pointer;">Выйти</button>
+                            </li>
+                        </form>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user_app:login' %}">Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user_app:register' %}">Регистрация</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

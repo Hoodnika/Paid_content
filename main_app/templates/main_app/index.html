@@ -1,0 +1,132 @@
+{% extends 'main_app/base.html' %}
+{% block content %}
+{% load my_tags %}
+<main>
+
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true"
+                    aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
+                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#777"/>
+                </svg>
+
+                <div class="container">
+                    <div class="carousel-caption text-start">
+                        <h1>Площадка для ваших знаний</h1>
+                        <p>Делитесь знаниями, получайте знания</p>
+                        {% if not user.is_authenticated %}
+                        <p><a class="btn btn-lg btn-primary" href="{% url 'user_app:login' %}">Войти</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
+                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#777"/>
+                </svg>
+
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>Еще больше публикаций</h1>
+                        <p>{{ carousel_middle_text }}</p>
+                        {% if not carousel_middle_text_hide %}
+                        <p><a class="btn btn-lg btn-primary" href="{% url 'main_app:subscription_create' %}">Подписаться</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
+                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#777"/>
+                </svg>
+
+                <div class="container">
+                    <div class="carousel-caption text-end">
+                        <h1>Есть хорошая идея или деловое предложение?</h1>
+                        <p>Свяжитесь с нами - {{ support_email }}</p>
+                        <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+    <form action="{% url 'main_app:search' %}" method="get" class="d-flex" style="margin: 100px 100px 60px 150px;">
+        <input class="form-control me-2" placeholder="Найти публикацию по названию" type="text" id="search-input"
+               name="q">
+        <button class="btn btn-outline-dark" type="submit">Поиск</button>
+    </form>
+    <div id="search-results"></div>
+
+    <div class="container marketing infinite-container">
+
+        {% for pub in publications %}
+        <div class="row infinite-item">
+            <div class="col-md-7">
+                <h2 class="featurette-heading">
+                    <a href="{% url 'main_app:publication_detail' slug=pub.slug %}" style="color: black;text-decoration: none;">{{ pub.title }}</a>
+                </h2>
+                <p class="lead">{{ pub.description|slice:300 }}...</p>
+            </div>
+            <div class="col-md-5">
+                {% if pub.preview %}
+                <img height="500" width="500" src="{{ pub.preview | media_filter }}">
+                {% else %}
+                <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
+                     height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500"
+                     preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                    <rect width="100%" height="100%" fill="#eee"/>
+                    <text x="50%" y="50%" fill="#aaa" dy=".3em">Красивая картинка</text>
+                </svg>
+                {% endif %}
+            </div>
+            <hr class="dropdown-divider">
+        </div>
+        {% endfor %}
+
+        {% if not publications %}
+        <h2>Ничего не найдено.</h2>
+        {% endif %}
+
+    </div>
+    <div class="loading row-12" style="display: none;">
+        Loading...
+    </div>
+    {% if page_obj.has_next %}
+    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">More</a>
+    {% endif %}
+    <script>
+        var infinite = new Waypoint.Infinite({
+          element: $('.infinite-container')[0],
+          onBeforePageLoad: function () {
+            $('.loading').show();
+          },
+          onAfterPageLoad: function ($items) {
+            $('.loading').hide();
+          }
+        });
+    </script>
+
+</main>
+    {% endblock %}

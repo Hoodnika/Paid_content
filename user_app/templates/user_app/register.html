@@ -1,0 +1,38 @@
+{% extends 'main_app/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 col-md-7 py-4">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            <form class="row" method="post" enctype="multipart/form-data">
+                <div class="col-9"></div>
+                <div class="card shadow-sm">
+                    <div class="card-body ">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </div>
+                    {% if sms_required %}
+                    <div class="form-group">
+                        <label for="id_sms">SMS</label>
+                        <input type="text" id="id_sms" name="sms" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                        Подтвердить телефон
+                    </button>
+                    {% else %}
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                        Отправить код на телефон
+                    </button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

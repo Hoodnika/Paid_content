@@ -1,0 +1,20 @@
+{% extends 'main_app/base.html' %}
+{% block content %}
+{% load static %}
+
+<link href="{% static 'css/ckeditor5-editor.css' %}" rel="stylesheet" type="text/css">
+
+<div class="container mt-3 d-flex justify-content-center">
+    <div class="col-lg-8 col-sm-12">
+        <h2>Добавление Публикации</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+            <button type="submit" name="btn_save" class="btn btn-success mt-3">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

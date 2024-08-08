@@ -1,0 +1,84 @@
+{% extends 'main_app/base.html' %}
+{% block content %}
+{% load my_tags %}
+{% load static %}
+<main class="container">
+
+    <div class="row mb-2" style="margin: 50px 0 0 0;">
+        {% for random_object in object|random_publication %}
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">Случайная статья автора - {{ object.owner
+                        }}</strong>
+                    <h3 class="mb-0">{{ random_object }}</h3>
+                    <div class="mb-1 text-muted">{{ random_object.updated_at }}</div>
+                    <p class="card-text mb-auto">{{ random_object.description|slice:100 }}...</p>
+                    <a href="{% url 'main_app:publication_detail' slug=random_object.slug %}" class="stretched-link">Перейти
+                        на статью</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    {% if random_object.preview %}
+                    <img class="bd-placeholder-img" width="200" height="250"
+                         src="{{ random_object.preview|media_filter }}">
+                    {% else %}
+                    <svg class="bd-placeholder-img" width="200" height="250" role="img"
+                         aria-label="Placeholder: Thumbnail" focusable="false">
+                        <rect width="100%" height="100%" fill="#55595c"/>
+                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Красивая картинка</text>
+                    </svg>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-success">Все статьи автора</strong>
+                    <h3 class="mb-0">{{ object.owner }}</h3>
+                    <div class="mb-1 text-muted">Пользователь с {{ object.owner.created_at }}</div>
+                    {% if object.owner.open_email %}
+                    <p class="mb-auto">Связь с автором - {{ object.owner.email }}</p>
+                    {% endif %}
+                    <a href="{% url 'main_app:publication_owner' pk=object.owner.pk %}" class="stretched-link">Посмотреть
+                        все статьи автора</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    {% if object.owner.image %}
+                    <img class="bd-placeholder-img" width="200" height="250"
+                         src="{{ object.owner.image|media_filter }}">
+                    {% else %}
+                    <img class="bd-placeholder-img" width="200" height="250" src="{% static 'empty_avatar.jpg' %}">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if object.owner.email == user.email %}
+    <hr class="dropdown-divider">
+    <ul class="list-unstyled mb-0" style="display: flex;justify-content: space-between;">
+        <li>
+        <a type="button" class="btn btn-warning" href="{% url 'main_app:publication_update' pk=object.pk %}">
+            Редактировать
+        </a>
+        </li>
+        <li>
+        <a type="button" class="btn btn-danger" href="{% url 'main_app:publication_delete' pk=object.pk %}">
+            Удалить
+        </a>
+        </li>
+    </ul>
+    {% endif %}
+
+    <div class="row g-5">
+        <h1 class="pb-4 mb-4 fst-italic border-bottom" style="text-align: center;">
+            {{ object.title }}
+        </h1>
+        <div class="ck-content">
+            <p> {{ object.content|safe }} </p>
+        </div>
+    </div>
+    <hr class="dropdown-divider">
+</main>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'main_app/base.html'%}
+{% load my_tags %}
+{% block content %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 justify-content-center" style="margin-top: 50px;">
+    <div class="col">
+        <form class="card shadow-sm">
+            <div class="card-body">
+                {% csrf_token %}
+                <h1 class="card-title " style="text-align: center;">{{ object.title }}</h1>
+                    <link>
+                    <a type="button"
+                       class="btn btn btn-secondary"
+                       href="{% url 'main_app:publication_detail' slug=object.slug %}">Отменить</a>
+                    <button type="submit"
+                            class="btn btn btn-danger"
+                            formmethod="post"
+                            formenctype="multipart/form-data">Действительно УДАЛИТЬ
+                    </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

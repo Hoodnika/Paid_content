@@ -1,0 +1,119 @@
+{% extends 'main_app/base.html' %}
+{% block content %}
+{% load my_tags %}
+{% load static %}
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        {% if user.avatar %}
+                        <img src="{{ user.avatar | media_filter }}" alt="avatar" class="rounded-circle img-fluid"
+                             style="width: 150px; height: 150px;">
+                        {% else %}
+                        <img src="{% static 'empty_avatar.jpg' %}" alt="avatar" class="rounded-circle img-fluid"
+                             style="width: 150px;">
+                        {% endif %}
+                        <h5 class="my-3">{{ user.first_name }} {{ user.last_name }}</h5>
+                        {% if user.about %}
+                        <p class="text-muted mb-1">{{ user.about }}</p>
+                        {% endif %}
+                        <div class="d-flex justify-content-center mb-2">
+                            {% if not subscribe_hide %}
+                            <a type="button" class="btn btn-primary" href="{% url 'main_app:subscription_create' %}">Оформить подписку</a>
+                            {% endif %}
+                            <a type="button" class="btn btn-outline-primary ms-1" href="{% url 'user_app:profile_update' pk=user.pk %}">Редактировать</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4 mb-lg-0">
+                    <div class="card-body p-0">
+                        {% for pub in publications %}
+                        <ul class="list-group list-group-flush rounded-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                <i class="fas fa-globe fa-lg text-warning"></i>
+                                <p class="mb-0" style="font-weight: bold; font-size: 1.2rem;">{{ pub.title }}</p>
+                                <div class="d-flex align-items-center">
+                                    <a href="{% url 'main_app:publication_detail' slug=pub.slug %}" class="btn btn-primary mr-3">Читать</a>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Full Name</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{ user.first_name }} {{ user.last_name }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        {% if user.email %}
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{ user.email }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Phone</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{ user.phone_number }}</p>
+                            </div>
+                        </div>
+                        {% if user.country %}
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Country</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{ user.country }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    {% for last_publication in last_publications %}
+                    <div class="col-md-6">
+                        <div class="card mb-4 mb-md-0">
+                            <div class="card-body">
+                                <p class="mb-4"> Одна из последних публикаций - {{ last_publication.title }}
+                                </p>
+                                {% if last_publication.preview %}
+                                <img class="bd-placeholder-img" width="300" height="250"
+                                     src="{{ last_publication.preview | media_filter }}">
+                                {% else %}
+                                <svg class="bd-placeholder-img" width="380" height="250" role="img"
+                                     aria-label="Placeholder: Thumbnail" focusable="false">
+                                    <rect width="100%" height="100%" fill="#55595c"/>
+                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Красивая картинка</text>
+                                </svg>
+                                {% endif %}
+                                <a href="{% url 'main_app:publication_detail' slug=last_publication.slug %}"
+                                   class="btn btn-primary w-100 mt-3">Читать</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

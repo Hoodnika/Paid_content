@@ -1,0 +1,10 @@
+{% extends 'main_app/base.html' %}
+{% block content %}
+<div class="alert alert-success" role="alert">
+  Спасибо за покупку!
+  <a
+      href="{% url 'main_app:main' %}"
+      >Вернуться на главную</a
+    >
+</div>
+{% endblock content %}

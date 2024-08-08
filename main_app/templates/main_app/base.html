@@ -1,0 +1,54 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/ckeditor5-content.css' %}" rel="stylesheet" type="text/css">
+
+    <title>Дипломная</title>
+    <style>
+        .bd-placeholder-img {
+          font-size: 1.125rem;
+          text-anchor: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          user-select: none;
+        }
+
+        @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+          }
+        }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/carousel.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+
+</head>
+<body>
+
+<header>
+    {% include 'main_app/includes/inc_menu.html' %}
+</header>
+
+<main>
+    {% block content %}
+    {% endblock %}
+    <footer class="container">
+        <p class="float-end"><a href="#">Наверх</a></p>
+        <p>&copy; Дипломная работа Paid_content</p>
+    </footer>
+</main>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+</html>
