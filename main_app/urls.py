@@ -8,7 +8,7 @@ from main_app.views import PublicationListView, PublicationSearchView, Publicati
 app_name = MainAppConfig.name
 
 urlpatterns = [
-    path('main/', cache_page(60)(PublicationListView.as_view()), name='main'),
+    path('main/', PublicationListView.as_view(), name='main'),
     path('<int:pk>/', cache_page(30)(PublicationAuthorListView.as_view()), name='publication_owner'),
     path('search/', cache_page(30)(PublicationSearchView.as_view()), name='search'),
 
