@@ -73,8 +73,8 @@ class RegisterView(CreateView):
             else:
                 password = form.cleaned_data['password1']
                 if not DEBUG:
-                    # sms = str(send_sms(phone_number))
-                    sms = '1234'
+                    sms = str(send_sms(phone_number))
+                #     sms = '1234'
                 else:
                     sms = '1234'
 

@@ -28,7 +28,7 @@ urlpatterns = [
 
     path('payment_success/', payment_success, name='payment_success'),
 
-    path('profile/<int:pk>/', cache_page(60)(ProfileView.as_view()), name='profile'),
-    path('profile/update/<int:pk>/', cache_page(60)(ProfileUpdateView.as_view()), name='profile_update'),
+    path('profile/<int:pk>/', cache_page(10)(ProfileView.as_view()), name='profile'),
+    path('profile/update/<int:pk>/', cache_page(10)(ProfileUpdateView.as_view()), name='profile_update'),
     path('verify-sms/', SMSVerificationView.as_view(), name='sms_verification'),
 ]
