@@ -29,8 +29,12 @@ SECRET_KEY = os.getenv('SECRET_KEY_DJANGO')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-REMOTE_HOST = os.getenv('REMOTE_HOST')
-ALLOWED_HOSTS = [REMOTE_HOST, 'localhost', '127.0.0.1']
+if DEBUG:
+    REMOTE_HOST = '*'
+else:
+    REMOTE_HOST = os.getenv('REMOTE_HOST')
+
+ALLOWED_HOSTS = [REMOTE_HOST]
 
 # Application definition
 
@@ -88,8 +92,10 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB'),
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': os.getenv('POSTGRES_PORT'),
+        # 'HOST': os.getenv('POSTGRES_HOST'),
+        # 'PORT': os.getenv('POSTGRES_PORT'),
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
